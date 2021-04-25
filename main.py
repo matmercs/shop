@@ -19,7 +19,7 @@ class Item(db.Model):
     path = db.Column(db.String, nullable=False)
 
     def __str__(self):
-        return str(self.id) + self.title + str(self.price) + self.path
+        return str(self.id) + ' ' + self.title + ' ' + str(self.price) + ' ' + self.path
 
 
 class User(db.Model):
@@ -29,7 +29,7 @@ class User(db.Model):
     name = db.Column(db.String, nullable=False)
 
     def __str__(self):
-        return str(self.id) + self.un + self.pw + self.name
+        return str(self.id) + ' ' + self.un + ' ' + self.pw + ' ' + self.name
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -41,7 +41,6 @@ def registerpage():
         un = data['login']
         pw = data['password']
         n = data['name']
-
         logged = False
         for user in User.query.all():
             if str(user).split()[1] == un:
@@ -52,11 +51,17 @@ def registerpage():
             try:
                 db.session.add(user)
                 db.session.commit()
-                return render_template('/login')
+                return redirect('/login')
             except:
                 return 'Ошибка'
         else:
             return 'Такой пользователь есть'
+
+
+@app.route('/login', methods=['GET'])
+def loginpage():
+    if request.method == 'GET':
+        return render_template('login.html')
 
 
 def main():
