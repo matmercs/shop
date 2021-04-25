@@ -35,7 +35,7 @@ class User(db.Model):
 @app.route('/register', methods=['GET', 'POST'])
 def registerpage():
     if request.method == 'GET':
-        return render_template("register.html")
+        return render_template("register.html", warning='')
     elif request.method == "POST":
         data = request.form.to_dict()
         un = data['login']
@@ -55,7 +55,7 @@ def registerpage():
             except:
                 return 'Ошибка'
         else:
-            return 'Такой пользователь есть'
+            return render_template('register.html', warning='Такой пользователь есть.')
 
 
 @app.route('/login', methods=['GET'])
