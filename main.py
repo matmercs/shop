@@ -47,7 +47,7 @@ def registerpage():
             try:
                 db.session.add(user)
                 db.session.commit()
-                return redirect('/home')
+                return redirect('/login')
             except:
                 return 'Ошибка'
         else:
@@ -64,14 +64,16 @@ def loginpage():
         pw = data['password']
         name = False
         pas = False
+        cur_user = None
         for user in User.query.all():
             if str(user).split()[1] == un:
                 name = True
                 if str(user).split()[2] == pw:
                     pas = True
+                    cur_user = user
                     break
         if name and pas:
-            return redirect('/homepage')
+            return redirect('/home')
         elif name and (not pas):
             return render_template('login.html', warning='Неверный пароль.')
         else:
@@ -81,7 +83,7 @@ def loginpage():
 @app.route('/home', methods=['GET'])
 def homepage():
     if request.method == 'GET':
-        return render_template('homepage.html')
+        return render_template('homepage.html', username="user")
 
 
 def main():
