@@ -24,7 +24,7 @@
     {
     width: 500px;
     }
-    #name
+    #mail
     {
     width: 500px;
     }
@@ -49,12 +49,12 @@
 <h1 style="margin-left: 250px">Регистрация </h1>
 <div>
     <form class="login_form" method="post">
-        <h4 style="margin-left: 250px">Имя:</h4>
-        <input style="margin-left: 250px" type="text" class="form-control" id="name" placeholder="Введите Ваше имя" name="name">
+        <h4 style="margin-left: 250px">Адрес электронной почты:</h4>
+        <input style="margin-left: 250px" type="email" class="form-control" id="mail" placeholder="Введите адсер эл. почты" name="mail" required>
         <h4 style="margin-left: 250px">Имя пользователя:</h4>
-        <input style="margin-left: 250px" type="text" class="form-control" id="login" placeholder="Введите имя пользователя" name="login">
+        <input style="margin-left: 250px" type="text" class="form-control" id="login" placeholder="Введите имя пользователя" name="login" required pattern="[a-zA-Z0-9]{3,10}" title="Любй логин латиницей, от 3 до 10 символов">
         <h4 style="margin-left: 250px">Пароль:</h4>
-        <input style="margin-left: 250px" type="password" class="form-control" id="password" placeholder="Введите пароль" name="password">
+        <input style="margin-left: 250px" type="password" class="form-control" id="password" placeholder="Введите пароль" name="password" required minlength="4" maxlength="100" title="От 4 до 100 символов латиницей и цифры">
         <button style="margin-left: 250px" type="submit" class="btn btn-primary">Зарегистрироваться</button>
     </form>
 </div>

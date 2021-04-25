@@ -26,10 +26,10 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     un = db.Column(db.String, nullable=False)
     pw = db.Column(db.String, nullable=False)
-    name = db.Column(db.String, nullable=False)
+    mail = db.Column(db.String, nullable=False)
 
     def __str__(self):
-        return str(self.id) + ' ' + self.un + ' ' + self.pw + ' ' + self.name
+        return str(self.id) + ' ' + self.un + ' ' + self.pw + ' ' + self.mail
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -40,14 +40,14 @@ def registerpage():
         data = request.form.to_dict()
         un = data['login']
         pw = data['password']
-        n = data['name']
+        mail = data['mail']
         logged = False
         for user in User.query.all():
             if str(user).split()[1] == un:
                 logged = True
                 break
         if not logged:
-            user = User(un=un, pw=pw, name=n)
+            user = User(un=un, pw=pw, mail=mail)
             try:
                 db.session.add(user)
                 db.session.commit()
