@@ -47,7 +47,7 @@ def registerpage():
             try:
                 db.session.add(user)
                 db.session.commit()
-                return redirect('/login')
+                return redirect('/home')
             except:
                 return 'Ошибка'
         else:
@@ -78,9 +78,10 @@ def loginpage():
             return render_template('login.html', warning='Такого пользователя не существует.')
 
 
-@app.route('/homepage')
+@app.route('/home', methods=['GET'])
 def homepage():
-    return render_template('homepage.html')
+    if request.method == 'GET':
+        return render_template('homepage.html')
 
 
 def main():
