@@ -99,8 +99,23 @@ def profile():
         return render_template('nprofile.html')
 
 
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('error.html'), 404
+
+
 def main():
     app.run(port=8080, host='127.0.0.1')
+
+
+@app.route('/home')
+def homepage():
+    return render_template('homepage.html')
+
+
+@app.route('/')
+def index():
+    return redirect('/home')
 
 
 if __name__ == '__main__':
