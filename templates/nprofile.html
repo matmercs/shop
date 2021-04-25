@@ -27,15 +27,14 @@
     </div>
     </div>
 </header>
-<h2 style="margin-left: 250px">Ваш профиль</h2>
+<h2 style="margin-left: 250px">Вы не авторизованы</h2>
 <div>
-    <h4 style="margin-left: 250px">Адрес электронной почты:</h4>
-    <h6 style="margin-left: 250px">{{ email }}</h6>
-    <h4 style="margin-left: 250px">Имя поьзователя:</h4>
-    <h6 style="margin-left: 250px">{{ un }}</h6>
-    <form action="/profile" method="post">
-    <button style="margin-left: 250px" class="btn btn-primary" type="submit">Выйти</button>
-    </form>
+    <a href="/login">
+        <button style="margin-left: 250px" type="submit" class="btn btn-primary">Войти</button>
+    </a>
+    <a href="/register">
+        <button style="margin-left: 250px" type="submit" class="btn btn-primary">Зарегистрироваться</button>
+    </a>
 
 </div>
 </body>

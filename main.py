@@ -75,6 +75,7 @@ def loginpage():
                     name = True
                     if str(user).split()[2] == pw:
                         pas = True
+                        session['mail'] = str(user).split()[3]
                         break
             if name and pas:
                 session['un'] = un
@@ -85,12 +86,17 @@ def loginpage():
                 return render_template('login.html', warning='Такого пользователя не существует.')
 
 
-@app.route('/profile')
+@app.route('/profile', methods=["GET", "POST"])
 def profile():
-    if str(session.get('un', '')) != '':
-        return render_template('profile.html', un=str(session.get('un', '')))
+    if request.method == 'GET':
+        if str(session.get('un', '')) != '' and str(session.get('un', '')) is not None:
+            return render_template('profile.html', un=str(session.get('un', '')), email=str(session.get('mail', '')))
+        else:
+            return render_template('nprofile.html')
     else:
-        return render_template('profile.html')
+        session.pop('mail', None)
+        session.pop('un', None)
+        return render_template('nprofile.html')
 
 
 def main():
