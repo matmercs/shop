@@ -71,14 +71,14 @@ def loginpage():
                     pas = True
                     break
         if name and pas:
-            return redirect('/homepage')
+            return redirect('/home')
         elif name and (not pas):
             return render_template('login.html', warning='Неверный пароль.')
         else:
             return render_template('login.html', warning='Такого пользователя не существует.')
 
 
-@app.route('/homepage')
+@app.route('/home')
 def homepage():
     return render_template('homepage.html')
 
