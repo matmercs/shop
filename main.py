@@ -1,8 +1,4 @@
 from flask import Flask, request, redirect, render_template
-import os
-from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import DataRequired
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -58,10 +54,33 @@ def registerpage():
             return render_template('register.html', warning='Такой пользователь есть.')
 
 
-@app.route('/login', methods=['GET'])
+@app.route('/login', methods=['GET', 'POST'])
 def loginpage():
     if request.method == 'GET':
-        return render_template('login.html')
+        return render_template('login.html', warning='')
+    elif request.method == 'POST':
+        data = request.form.to_dict()
+        un = data['login']
+        pw = data['password']
+        name = False
+        pas = False
+        for user in User.query.all():
+            if str(user).split()[1] == un:
+                name = True
+                if str(user).split()[2] == pw:
+                    pas = True
+                    break
+        if name and pas:
+            return redirect('/homepage')
+        elif name and (not pas):
+            return render_template('login.html', warning='Неверный пароль.')
+        else:
+            return render_template('login.html', warning='Такого пользователя не существует.')
+
+
+@app.route('/homepage')
+def homepage():
+    return render_template('homepage.html')
 
 
 def main():
