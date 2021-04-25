@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, render_template
+from flask import Flask, request, redirect, render_template, session
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -30,57 +30,67 @@ class User(db.Model):
 
 @app.route('/register', methods=['GET', 'POST'])
 def registerpage():
-    if request.method == 'GET':
-        return render_template("register.html", warning='')
-    elif request.method == "POST":
-        data = request.form.to_dict()
-        un = data['login']
-        pw = data['password']
-        mail = data['mail']
-        logged = False
-        for user in User.query.all():
-            if str(user).split()[1] == un:
-                logged = True
-                break
-        if not logged:
-            user = User(un=un, pw=pw, mail=mail)
-            try:
-                db.session.add(user)
-                db.session.commit()
-                return redirect('/login')
-            except:
-                return 'Ошибка'
-        else:
-            return render_template('register.html', warning='Такой пользователь есть.')
+    if str(session.get('un', '')) != '':
+        return render_template('nreg.html')
+    else:
+        if request.method == 'GET':
+            return render_template("register.html", warning='')
+        elif request.method == "POST":
+            data = request.form.to_dict()
+            un = data['login']
+            pw = data['password']
+            mail = data['mail']
+            logged = False
+            for user in User.query.all():
+                if str(user).split()[1] == un:
+                    logged = True
+                    break
+            if not logged:
+                user = User(un=un, pw=pw, mail=mail)
+                try:
+                    db.session.add(user)
+                    db.session.commit()
+                    return redirect('/login')
+                except:
+                    return 'Ошибка'
+            else:
+                return render_template('register.html', warning='Такой пользователь есть.')
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def loginpage():
-    if request.method == 'GET':
-        return render_template('login.html', warning='')
-    elif request.method == 'POST':
-        data = request.form.to_dict()
-        un = data['login']
-        pw = data['password']
-        name = False
-        pas = False
-        for user in User.query.all():
-            if str(user).split()[1] == un:
-                name = True
-                if str(user).split()[2] == pw:
-                    pas = True
-                    break
-        if name and pas:
-            return redirect('/home')
-        elif name and (not pas):
-            return render_template('login.html', warning='Неверный пароль.')
-        else:
-            return render_template('login.html', warning='Такого пользователя не существует.')
+    if str(session.get('un', '')) != '':
+        return render_template('nlog.html')
+    else:
+        if request.method == 'GET':
+            return render_template('login.html', warning='')
+        elif request.method == 'POST':
+            data = request.form.to_dict()
+            un = data['login']
+            pw = data['password']
+            name = False
+            pas = False
+            for user in User.query.all():
+                if str(user).split()[1] == un:
+                    name = True
+                    if str(user).split()[2] == pw:
+                        pas = True
+                        break
+            if name and pas:
+                session['un'] = un
+                return redirect('/profile')
+            elif name and (not pas):
+                return render_template('login.html', warning='Неверный пароль.')
+            else:
+                return render_template('login.html', warning='Такого пользователя не существует.')
 
 
-@app.route('/home')
-def homepage():
-    return render_template('homepage.html')
+@app.route('/profile')
+def profile():
+    if str(session.get('un', '')) != '':
+        return render_template('profile.html', un=str(session.get('un', '')))
+    else:
+        return render_template('profile.html')
 
 
 def main():

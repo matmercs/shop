@@ -34,14 +34,11 @@
 <header>
     <div class="navbar navbar-dark bg-dark shadow-sm">
     <div class="container">
-      <a href="/" class="navbar-brand d-flex align-items-center">
+      <a href="/home" class="navbar-brand d-flex align-items-center">
         <strong>Hype shop</strong>
       </a>
-    <a href="/register">
-        <button style="margin-left: 800px">Регистрация</button>
-    </a>
-        <a href="/login">
-        <button>Войти</button>
+    <a href="/profile">
+        <button style="margin-left: 800px">Профиль</button>
     </a>
     </div>
     </div>
@@ -56,6 +53,9 @@
         <button style="margin-left: 250px" type="submit" class="btn btn-primary">Войти</button>
     </form>
     <h4 style="margin-left: 250px">{{ warning }}</h4>
+    <a href="/register">
+        <button style="margin-left: 250px" type="submit" class="btn btn-primary">У нет аккаунта</button>
+    </a>
 </div>
 </body>
 </html>
