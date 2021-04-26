@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+          integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{# url_for('static', filename='css/style.css') #}"/>
+    <title>ADMIN</title>
+    <style>
+        .form-control {
+            margin: 2%;
+            background: #cfcfcf;
+        }
+
+        h1 {
+            margin: 2%;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="navbar navbar-dark bg-dark shadow-sm">
+        <div class="container">
+            <a href="/home" class="navbar-brand d-flex align-items-center">
+                <strong>Hype Shop</strong>
+            </a>
+            <a href="/orders">
+                <button type="button" class="btn btn-dark" style="margin-left: 900px">Заказы</button>
+            </a>
+            <span class="navbar-text">
+                Здравствуйте, admin!
+            </span>
+            </a>
+        </div>
+    </div>
+</header>
+<h1 style="margin-left: 250px">Добавить позицию</h1>
+<form class="admin_form" method="post" enctype="multipart/form-data">
+    <h4 style="margin-left: 250px">Название товара</h4>
+    <input style="margin-left: 250px" type="text" class="form-control" id="name" placeholder="Введите название товара"
+           name="name" title="Всё, что угодно">
+    <h4 style="margin-left: 250px">Описание:</h4>
+    <input style="margin-left: 250px" type="text" class="form-control" id="desc" placeholder="Введите описание"
+           name="desc" required maxlength="100" title="Описание товара">
+    <h4 style="margin-left: 250px">Цена:</h4>
+    <input style="margin-left: 250px" type="number" class="form-control" id="cost" placeholder="Введите стоимость   "
+           name="cost" title="Стоимость товара">
+    <h4 style="margin-left: 250px">Добавьте картинку:</h4>
+    <input style="margin-left: 250px" type="text" class="form-control" id="pic" placeholder="Введите url картинки"
+           name="pic" title="Ссылка на товар">
+    <button style="margin-left: 250px" type="submit" class="btn btn-primary">Добавить</button>
+</form>
+</div>
+</body>
+</html>

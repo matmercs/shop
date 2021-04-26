@@ -22,7 +22,7 @@
 <header>
     <div class="navbar navbar-dark bg-dark shadow-sm">
         <div class="container">
-            <a href="/" class="navbar-brand d-flex align-items-center">
+            <a href="/home" class="navbar-brand d-flex align-items-center">
                 <strong>Hype Shop</strong>
             </a>
             <span class="navbar-text">
@@ -32,6 +32,17 @@
         </div>
     </div>
 </header>
+{% for item in items %}
+    <div class="card bg-light mb-3 border-secondary text-center" style="width: 22rem;">
+        <img class="card-img-top" src="{{ item.get_pic() }}" alt="Card image"?>
+        <div class="card-body">
+            <h2 class="card-title">{{ item.get_title() }}</h2>
+            <p class="card-text">{{ item.get_desc() }}</p>
+            <h3 class="card-text">{{ item.get_price() }}</h3>
+            <a href="#" class="btn btn-primary">Добавить в корзину</a>
+        </div>
+    </div>
+{% endfor %}
 
 </body>
 </html>
