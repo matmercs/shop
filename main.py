@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, render_template, session
+from flask import Flask, request, redirect, render_template, session, flash
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -16,6 +16,15 @@ class Item(db.Model):
 
     def __str__(self):
         return str(self.id) + ' ' + self.title + ' ' + str(self.price) + ' ' + self.path
+
+    def get_title(self):
+        return self.title
+
+    def get_price(self):
+        return ''.join([str(self.price), 'р.'])
+
+    def get_path(self):
+        return self.path
 
 
 class User(db.Model):
@@ -99,6 +108,21 @@ def profile():
         return render_template('nprofile.html')
 
 
+def to_3_by_tuple(items):
+    tp = []
+    vr = []
+    for i, el in enumerate(items):
+        if (i + 1) % 4 == 0:
+            vr.append(el)
+            tp.append(vr)
+            vr = []
+        else:
+            vr.append(el)
+    if len(vr) != 0:
+        tp.append(vr)
+    return tp
+
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('error.html'), 404
@@ -108,9 +132,13 @@ def main():
     app.run(port=8080, host='127.0.0.1')
 
 
-@app.route('/home')
+@app.route('/home', methods=['GET', 'POST'])
 def homepage():
-    return render_template('homepage.html')
+    if request.method == 'GET':
+        return render_template('homepage.html', items=to_3_by_tuple(Item.query.all()), str=str)
+    else:
+        print('Отправлено')
+        return render_template('homepage.html', items=to_3_by_tuple(Item.query.all()), str=str)
 
 
 @app.route('/')
