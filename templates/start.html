@@ -5,12 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{# url_for('static', filename='css/style.css') #}" />
-    <title>Профиль</title>
+    <title>Добро пожаловать</title>
     <style>
     .form-control
     {
     margin: 2%;
     background: #cfcfcf;
+    }
+    .center-img {
+    display: block;
+    margin: 0 auto;
     }
     </style>
 </head>
@@ -27,21 +31,22 @@
     </div>
     </div>
 </header>
-<h2 style="margin-left: 250px">Ваш профиль</h2>
+<p> </p>
+<h4 style="text-align: center;"> Для использования этого сервиса вам необходимо зарегистрироваться или войти в свой аккаунт</h4>
+<img src="/static/img/calendar.png" class="center-img" height="350px" alt="Здесь должна была быть картинка, но не нашлась">
 <div>
-    <h4 style="margin-left: 250px">Адрес электронной почты:</h4>
-    <h6 style="margin-left: 250px">{{ email }}</h6>
-    <h4 style="margin-left: 250px">Имя поьзователя:</h4>
-    <h6 style="margin-left: 250px">{{ un }}</h6>
-    <form action="/profile" method="post">
-    <button style="margin-left: 250px" class="btn btn-primary" type="submit">Выйти</button>
-    </form>
-</div>
     <p> </p>
-    <a href="/home">
-        <button style="margin-left: 250px" type="submit" class="btn btn-primary">На главную</button>
+    <a href="/login">
+        <button style="margin-left: 600px" type="submit" class="btn btn-primary">Войти</button>
     </a>
+
+</div>
 <div>
+    <p> </p>
+    <a href="/register">
+        <button style="margin-left: 550px" type="submit" class="btn btn-primary">Зарегистрироваться</button>
+    </a>
 </div>
 </body>
 </html>
+

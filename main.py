@@ -1,30 +1,13 @@
+import sqlite3
 from flask import Flask, request, redirect, render_template, session, flash
 from flask_sqlalchemy import SQLAlchemy
+from flask import jsonify
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '1423'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///shop.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
-
-
-class Item(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String, nullable=False)
-    price = db.Column(db.Integer, nullable=False)
-    path = db.Column(db.String, nullable=False)
-
-    def __str__(self):
-        return str(self.id) + ' ' + self.title + ' ' + str(self.price) + ' ' + self.path
-
-    def get_title(self):
-        return self.title
-
-    def get_price(self):
-        return ''.join([str(self.price), 'р.'])
-
-    def get_path(self):
-        return self.path
 
 
 class User(db.Model):
@@ -134,11 +117,76 @@ def main():
 
 @app.route('/home', methods=['GET', 'POST'])
 def homepage():
-    if request.method == 'GET':
-        return render_template('homepage.html', items=to_3_by_tuple(Item.query.all()), str=str)
+    if str(session.get('un', '')) != '':
+        conn = sqlite3.connect("data.db")
+        cur = conn.cursor()
+        cur.execute("SELECT id, title, start_event, end_event FROM events WHERE user=? ORDER BY id",
+                    [(str(session.get('un', '')))])
+        calendar = cur.fetchall()
+        return render_template('homepage.html', str=str, calendar=calendar)
     else:
-        print('Отправлено')
-        return render_template('homepage.html', items=to_3_by_tuple(Item.query.all()), str=str)
+        return render_template('start.html', str=str)
+
+
+@app.route("/insert", methods=["POST", "GET"])
+def insert():
+    if str(session.get('un', '')) != '':
+        conn = sqlite3.connect("data.db")
+        cur = conn.cursor()
+        msg = ''
+        if request.method == 'POST':
+            title = request.form['title']
+            start = request.form['start']
+            end = request.form['end']
+            un = str(session.get('un', ''))
+            cur.execute("INSERT INTO events (title,start_event,end_event,user) VALUES (?,?,?,?)",
+                        [title, start, end, un])
+            conn.commit()
+            cur.close()
+            msg = 'success'
+        return jsonify(msg)
+    else:
+        return render_template('start.html', str=str)
+
+
+@app.route("/update", methods=["POST", "GET"])
+def update():
+    if str(session.get('un', '')) != '':
+        conn = sqlite3.connect("data.db")
+        cur = conn.cursor()
+        msg = ''
+        if request.method == 'POST':
+            title = request.form['title']
+            start = request.form['start']
+            end = request.form['end']
+            id = request.form['id']
+            cur.execute("UPDATE events SET title = %s, start_event = %s, end_event = %s WHERE id = %s ",
+                        [title, start, end, id])
+            conn.commit()
+            cur.close()
+            msg = 'success'
+
+        return jsonify(msg)
+    else:
+        return render_template('start.html', str=str)
+
+
+@app.route("/ajax_delete", methods=["POST", "GET"])
+def ajax_delete():
+    if str(session.get('un', '')) != '':
+        conn = sqlite3.connect("data.db")
+        cur = conn.cursor()
+        msg = ''
+        if request.method == 'POST':
+            getid = request.form['id']
+            cur.execute('DELETE FROM events WHERE id = {0}'.format(getid))
+            conn.commit()
+            cur.close()
+            msg = 'Record deleted successfully'
+
+        return jsonify(msg)
+    else:
+        return render_template('start.html', str=str)
 
 
 @app.route('/')
